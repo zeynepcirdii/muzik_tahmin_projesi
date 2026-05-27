@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Zeka Müzik Öneri Sistemi</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #ffffff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background-color: #1e1e1e; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 100%; max-width: 400px; }
+        h1 { color: #1db954; text-align: center; font-size: 24px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        select, input[type="number"], button { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: none; box-sizing: border-box; }
+        button { background-color: #1db954; color: white; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background-color: #179643; }
+        .result { margin-top: 25px; padding: 15px; background-color: #282828; border-left: 5px solid #1db954; border-radius: 5px; }
+        .result p { margin: 5px 0; }
+        .highlight { color: #1db954; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ankara Üniversitesi Gölbaşı Kampüsünde Bugün Ne Dinlesem? 🎧</h1>
+    <form method="POST">
+        <label for="hava_durumu">Hava Durumu Nasıl?</label>
+        <select name="hava_durumu" id="hava_durumu" required>
+            <option value="Güneşli" {% if secili_hava == 'Güneşli' %}selected{% endif %}>☀️ Güneşli / Açık</option>
+            <option value="Bulutlu" {% if secili_hava == 'Bulutlu' %}selected{% endif %}>⛅ Parçalı Bulutlu</option>
+            <option value="Kapalı" {% if secili_hava == 'Kapalı' %}selected{% endif %}>☁️ Kapalı / Gri</option>
+            <option value="Yağmurlu" {% if secili_hava == 'Yağmurlu' %}selected{% endif %}>🌧️ Yağmurlu</option>
+        </select>
+
+        <label for="duygu_durumu">Duygu Durumun (1-10 Arası)</label>
+        <input type="number" name="duygu_durumu" id="duygu_durumu" min="1" max="10" placeholder="Örn: 8" value="{{ secili_duygu }}" required>
+
+        <label for="giyim_rengi">Bugün Hangi Kıyafet/Renk Giyindin?</label>
+        <select name="giyim_rengi" id="giyim_rengi" required>
+            {% for giyim in giyim_secenekleri %}
+                <option value="{{ giyim }}" {% if secili_giyim == giyim %}selected{% endif %}>👕 {{ giyim }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Şarkı Öner</button>
+    </form>
+
+    {% if oneri %}
+    <div class="result">
+        <p>Senin profiline uygun hesaplanan Enerji: <span class="highlight">{{ oneri.hedef_enerji }}</span></p>
+        <p>Hesaplanan Mutluluk (Valence): <span class="highlight">{{ oneri.hedef_valence }}</span></p>
+        <hr style="border-color: #444; margin: 15px 0;">
+        <p>🎵 <b>Önerilen Şarkı:</b> <span class="highlight">{{ oneri.sarki }}</span></p>
+        <p>🎤 <b>Sanatçı:</b> {{ oneri.sanatci }}</p>
+        <p><small>(Bu şarkının Enerjisi: {{ oneri.enerji }}, Mutluluğu: {{ oneri.valence }})</small></p>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
