@@ -55,6 +55,19 @@ Tarayıcıda `http://127.0.0.1:5000` adresini aç, hava durumunu, duygu durumunu
 python feature_importance.py
 ```
 
+## Sonuçlar
+
+Anket verisinde (70 katılımcı) hava durumu, giyim rengi ve duygu durumunun şarkıların Energy ve Valence değerleri üzerindeki etkisi Random Forest ve XGBoost ile test edildi (5 katlı, 5 tekrarlı çapraz doğrulama, permütasyon önemi).
+
+| Hedef | Model | R² (çapraz doğrulama) | Taban R² (sadece ortalama) |
+| --- | --- | --- | --- |
+| Energy | Random Forest | -0.267 | -0.058 |
+| Energy | XGBoost | -0.684 | -0.058 |
+| Valence | Random Forest | -0.073 | -0.050 |
+| Valence | XGBoost | -0.479 | -0.050 |
+
+Dört modelin R² değeri de yalnızca ortalamayı tahmin eden taban modelden düşük çıktı. Yani bu veriyle hava, giyim ve duygu durumu girdilerinin şarkı özelliklerini güvenilir biçimde tahmin ettiği gösterilemedi. Önem skorlarının standart sapması ortalamalarından büyük olduğu için sıralamalar (örneğin Valence için giyim rengi) kesin bulgu değil, zayıf bir eğilim olarak okunmalıdır. Daha güvenilir sonuçlar için daha büyük bir veri seti gerekir.
+
 ## Sınırlılıklar
 
 - Veri seti 70 katılımcıdan oluşuyor; sonuçlar genel geçer bir kanıt değil, ön çalışma niteliğinde.
